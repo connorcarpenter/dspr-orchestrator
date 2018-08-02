@@ -5,7 +5,7 @@ int main() {
     uWS::Hub h;
 
     std::string noResponse = "no response";
-    std::string bffResponse = "ws://localhost:3172";
+    std::string bffResponse = "ws://www.deuspora.com:3172";
 
     h.onHttpRequest([&](uWS::HttpResponse *res, uWS::HttpRequest req, char *data, size_t length, size_t remainingBytes)
     {
@@ -15,6 +15,7 @@ int main() {
             if (req.headers->valueLength == 17 && strncmp(req.headers->value, "/orchestrator/bff", 17) == 0)
             {
                 res->end(bffResponse.data(), bffResponse.length());
+                std::cout << "dspr-orchestrator: Received '/orchestrator/bff', Sent " << bffResponse << std::endl;
                 return;
             }
         }
@@ -24,9 +25,9 @@ int main() {
 
     h.getDefaultGroup<uWS::SERVER>().startAutoPing(30000);
     if (h.listen("localhost", 3171)) {
-        std::cout << "Listening to port 3171" << std::endl;
+        std::cout << "dspr-orchestrator: Listening to port 3171" << std::endl;
     } else {
-        std::cerr << "Failed to listen to port" << std::endl;
+        std::cerr << "dspr-orchestrator: Failed to listen to port" << std::endl;
         return -1;
     }
 
